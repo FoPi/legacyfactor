@@ -1,4 +1,8 @@
 <?php
+namespace Example4;
+
+use Example4\Client\CallableClient;
+use Example4\Client\Soap;
 
 /**
  * Created by PhpStorm.
@@ -12,29 +16,45 @@ class ClearAdminSoap
     /** @var String */
     protected $url = 'http://soaptest.example.com/reseller.wsdl';
 
-    /** @var Array */
+    /** @var array */
     protected $errors = array();
+
+    /**
+     * @var CallableClient
+     */
+    protected $client;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-            $this->client = new SoapClient($this->url, array(
-                'encoding' => 'UTF-8'
-            ));
+        $this->client = $this->createClient();
     }
 
-    public function addOssze($a, $b)
+    /**
+     * @param $value1
+     * @param $value2
+     *
+     * @return mixed
+     */
+    public function addOssze($value1, $value2)
     {
-        // convert data to the right format
-        $params = array(
-            "values"=>array(
-                'a'=>intval($a),
-                'b'=>intval($b)
-            )
-        );
+        $params = [
+            "values" => [
+                "a" => (int) $value1,
+                "b" => (int) $value2
+            ]
+        ];
 
-        return $this->client->__soapCall('AddOssze', $params);
+        return $this->client->call("AddOssze", $params);
+    }
+
+    /**
+     * @return Soap
+     */
+    protected function createClient()
+    {
+        return new Soap($this->url);
     }
 }

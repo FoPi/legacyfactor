@@ -14,8 +14,14 @@ class Price
 {
     public function calculateGross($net)
     {
+        return intval($net) * (($this->getTaxRate() / 100) +1);
+    }
 
-        return intval($net) * ((Tax::getTaxRate() / 100) +1);
-
+    /**
+     * @return int
+     */
+    protected function getTaxRate()
+    {
+        return Tax::getTaxRate();
     }
 }

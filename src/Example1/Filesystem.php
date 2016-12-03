@@ -1,6 +1,7 @@
 <?php
 
 namespace Example1;
+
 /**
  * Created by PhpStorm.
  * User: gabornagy
@@ -9,14 +10,41 @@ namespace Example1;
  */
 class Filesystem
 {
-
+    /**
+     * @param $path
+     *
+     * @return array
+     */
     public function lowerCase($path)
     {
+        $entries = $this->readPath($path);
 
-        $entries = glob($path);
-
-        return array_map('strtolower',$entries);
-
+        return $this->lowerCaseArrayValues($entries);
     }
 
+    /**
+     * @param $path
+     *
+     * @return array;
+     */
+    protected function readPath($path)
+    {
+        return glob($path);
+    }
+
+    /**
+     * @param $array
+     *
+     * @return array
+     */
+    protected function lowerCaseArrayValues($array)
+    {
+        $lowerCasedArray = [];
+
+        foreach ($array as $item) {
+            $lowerCasedArray[] = strtolower($item);
+        }
+
+        return $lowerCasedArray;
+    }
 }
